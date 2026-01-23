@@ -25,6 +25,6 @@ jobs:
         uses: actions/upload-artifact@v6.0.0
         with:
           name: app-files
-          path: Demoappaz204/Demoappaz204/Demoappaz204/bin/Release/net8.0/publish/
+          path: /home/runner/work/Demoappaz204/Demoappaz204/Demoappaz204/bin/Release/net8.0/publish/
 
         
