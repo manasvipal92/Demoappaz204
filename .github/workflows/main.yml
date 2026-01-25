@@ -1,8 +1,8 @@
-name: Starter Pipeline
+name: Starter Pipeline #Worflow name
 
-on: push
+on: push #trigger
 
-jobs:
+jobs: 
   test:
     runs-on: ubuntu-latest
     steps:
@@ -10,3 +10,5 @@ jobs:
         run: echo "Hello World!" > demo.txt
 
       - run: cat demo.txt
+      - run: pwd
+      - run: ls
