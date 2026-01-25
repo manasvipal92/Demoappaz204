@@ -47,4 +47,4 @@ jobs:
 
       # 6️⃣ Publish package to GitHub Packages
       - name: Publish to GitHub Packages
-        run: dotnet nuget push "./nupkg/*.nupkg" --source "https://nuget.pkg.github.com/ibnehussain/index.json" --api-key ${{ secrets.GITHUB_TOKEN }}
+        run: dotnet nuget push "./nupkg/*.nupkg" --source github
