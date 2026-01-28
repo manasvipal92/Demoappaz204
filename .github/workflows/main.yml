@@ -1,11 +1,9 @@
 
-name: Publish Package
-
+name: my first workflow
 on:
   push:
     branches:
       - master
-
 
 jobs:
   build-and-push:
@@ -15,20 +13,23 @@ jobs:
       - name: Check out Code
         uses: actions/checkout@v6.0.2
       
-      - name: Log in GHCR
-        uses: docker/login-action@v3.7.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{secrets.GITHUB_TOKEN}}
-
-      - name: Build and Push to GHCR
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: Demoappaz204/Dockerfile
-          push: true
-          tags: ghcr.io/${{github.repository_owner}}/demoappaz204:latest
+      - name: Run Composite Action
+        uses: ./.github/actions/dotnet-build
       
+      - name: Publish artifact
+        run: dotnet publish 
 
+      - name: List all files
+        run: ls /home/runner/work/Demoappaz204/Demoappaz204/Demoappaz204/bin/Release/net8.0/publish/
+        
+      - name: 'Login via Az CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CRED }}
 
+      - name: Deploy to Azure web app
+        uses: Azure/webapps-deploy@v3.0.5
+        with:
+          app-name: techmwebappforday2
+          package: /home/runner/work/Demoappaz204/Demoappaz204/Demoappaz204/bin/Release/net8.0/publish/
+        
