@@ -7,30 +7,27 @@ on:
       - master
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
       - name: Check out Code
         uses: actions/checkout@v6.0.2
-
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v5.1.0
+      
+      - name: Log in GHCR
+        uses: docker/login-action@v3.7.0
         with:
-          dotnet-version: '8.x'
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Restore 
-        run: dotnet restore
+      - name: Build and Push to GHCR
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: Demoappaz204/Dockerfile
+          push: true
+          tags: demoapp:latest
+      
 
-      - name: Build
-        run: dotnet build
 
-        
-      - name: Pack- Create a NuGet Package
-        run: dotnet pack --output ./nupkg
-
-      - name: List all files
-        run: ls -al
-
-      - name: Publish Package to GitHub Packages demo
-        run: dotnet nuget push "./nupkg/*.nupkg" --source "https://nuget.pkg.github.com/ibnehussain/index.json" --api-key ${{secrets.GITHUB_TOKEN}}
